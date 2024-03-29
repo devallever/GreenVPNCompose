@@ -10,5 +10,5 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val PageBgColor = Color(0xFF000000)
-val ThemeColor = Purple40
+val PageBgColor = Color(0xFF0D100F)
+val ThemeColor = Color(0xFF00F2A7)
