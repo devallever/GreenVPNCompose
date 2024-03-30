@@ -1,10 +1,10 @@
 package com.allever.compose.green.vpn
 
-import android.app.StatusBarManager
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,14 +23,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -41,8 +36,10 @@ import androidx.compose.ui.unit.sp
 import com.allever.compose.green.vpn.ui.theme.GreenVPNComposeTheme
 import com.allever.compose.green.vpn.ui.theme.PageBgColor
 import com.allever.compose.green.vpn.ui.theme.ThemeColor
+import com.allever.compose.green.vpn.viewmodel.MainViewModel
 
 class MainActivity : ComponentActivity() {
+    private val mViewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -93,6 +90,7 @@ class MainActivity : ComponentActivity() {
                                     .size(48.dp)
                                     .padding(12.dp)
                                     .clickable {
+
                                     },
                                 tint = Color.White
                             )
@@ -183,7 +181,12 @@ class MainActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .height(62.dp)
                                         .padding(vertical = 10.dp)
-                                        .border(2.dp, ThemeColor, RoundedCornerShape(8.dp)),
+                                        .border(2.dp, ThemeColor, RoundedCornerShape(8.dp))
+                                        .clickable {
+                                            val intent =
+                                                Intent(this@MainActivity, NodeListPage::class.java)
+                                            startActivity(intent)
+                                        },
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
@@ -236,7 +239,9 @@ class MainActivity : ComponentActivity() {
 
                                     text = "v1.0",
                                     color = Color.Gray,
-                                    modifier = Modifier.fillMaxWidth().padding(top = 0.dp, bottom = 20.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 0.dp, bottom = 20.dp),
                                     fontSize = 13.sp,
                                     textAlign = TextAlign.Center
                                 )
