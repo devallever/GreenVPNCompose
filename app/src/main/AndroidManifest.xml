@@ -13,10 +13,10 @@
         android:theme="@style/Theme.GreenVPNCompose"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".LoadingActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.GreenVPNCompose">
+            android:theme="@style/TempTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.allever.compose.green.vpn.NodeListPage" />
+        <activity android:name="com.allever.compose.green.vpn.MainActivity" />
     </application>
 
 </manifest>

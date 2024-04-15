@@ -3,4 +3,6 @@
 
     <style name="Theme.GreenVPNCompose" parent="android:Theme.Material.Light.NoActionBar">
     </style>
+
+    <style name="TempTheme" parent="Theme.AppCompat.Light.DarkActionBar"/>
 </resources>
