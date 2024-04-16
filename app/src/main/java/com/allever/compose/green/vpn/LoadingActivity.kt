@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.allever.compose.green.vpn.databinding.ActivityLoadingBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -14,7 +16,7 @@ class LoadingActivity: Activity() {
     private lateinit var mBinding: ActivityLoadingBinding
 
 
-    private val DURATION = 5 * 1000L
+    private val DURATION = 20 * 1000L
 
     private var firstPercent = 0.7f
     private var firstDuration = 0.2 * DURATION
@@ -32,6 +34,7 @@ class LoadingActivity: Activity() {
     private var finalStart = firstDuration + secondDuration
 
     private var isLoading = false
+    private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoadingBinding.inflate(layoutInflater)
@@ -39,10 +42,11 @@ class LoadingActivity: Activity() {
 
         mBinding.apply {
             var step = firstStep
-            GlobalScope.launch {
+            job = GlobalScope.launch (Dispatchers.Default){
                 isLoading = true
                 var progress = 0
-                while (progress < 100) {
+                var usedTime = 0F
+                while (job?.isActive == true && progress < 100) {
                     delay(step)
                     step = if (progress > 100 - finalPercent * 100) {
                         finalStep
@@ -51,9 +55,14 @@ class LoadingActivity: Activity() {
                     } else {
                         firstStep
                     }
+                    usedTime += step
                     progress += 1
-                    progressBar.progress = progress
-                    tvLoading.text = "${progress}%"
+                    log("usedTime = ${usedTime / 1000f}")
+
+                    launch(Dispatchers.Main) {
+                        progressBar.progress = progress
+                        tvLoading.text = "${progress}%"
+                    }
                     if (progress >= 100) {
                         val intent = Intent(this@LoadingActivity, MainActivity::class.java)
                         startActivity(intent)
@@ -67,5 +76,10 @@ class LoadingActivity: Activity() {
 
     private fun log(msg: String) {
         Log.d("LoadingTest", msg)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job?.cancel()
     }
 }
